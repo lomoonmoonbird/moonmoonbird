@@ -2,7 +2,7 @@
 
 import pathlib
 
-from app.handlers.api.index_api import index
+from app.handlers.api.index_api import Index
 from app.handlers.api.thread_api import Threads
 
 PROJECT_ROOT = pathlib.Path(__file__).parent
@@ -10,9 +10,10 @@ PROJECT_ROOT = pathlib.Path(__file__).parent
 
 def init_routers(app):
     t = Threads()
+    index = Index()
     # print (app['mongo_db'])
     #index
-    app.router.add_get('/', index)
+    app.router.add_get('/', index.index)
 
     #threads
     app.router.add_post('/api/blog/threads', t.post_thread)

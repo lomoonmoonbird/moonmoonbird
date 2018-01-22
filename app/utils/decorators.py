@@ -8,10 +8,8 @@ from app.utils.exceptions import RequestParamError
 def arg_parser(*required_args, **optional_args):
 
     def decorator(fn, *args, **kwargs):
-        # print (handler, 'handler')
         @functools.wraps(fn)
         async def inner(self, handler, *args, **kwargs):
-            raise RequestParamError('aa')
             query_args = {}
             handler.requestdata = {}
             if handler.match_info:

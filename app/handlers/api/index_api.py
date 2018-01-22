@@ -1,8 +1,19 @@
 #--*-- coding: utf-8 --*--
 
 from aiohttp import web
+from app.handlers.base import MMBaseApi
 
-async def index(request):
-    db = request.app['mongo_db']
+class Index(MMBaseApi):
 
-    return web.json_response('')
+    def __init__(self):
+        pass
+
+    async def index(self, request):
+        db = request.app['mongo_db']
+        threads = db.moonmoonbird.threads.find({}).limit(10)
+        ret = []
+        async for t in  threads:
+            t['_id'] = str(t['_id'])
+            ret.append(t)
+
+        return await self.reply_ok(ret)

@@ -43,7 +43,7 @@ class Threads(MMBaseApi):
 
         id = await request.app['mongo_db'].moonmoonbird.threads.insert(new_thread)
 
-        return self.reply_ok('')
+        return await self.reply_ok('')
 
     @arg_parser(('category', int),('subtype', int),
                 ('page_type', int), ('create_time', float))
@@ -67,7 +67,7 @@ class Threads(MMBaseApi):
         async for thread in threads:
             thread['_id'] = str(thread['_id'])
             ret.append(thread)
-        return web.json_response(data=ret)
+        self.reply_ok(ret)
 
     @arg_parser(('11','22'), page=(int, 1), sortType=(int, 0))
     async def thread_detail(self, request):

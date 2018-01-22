@@ -8,11 +8,18 @@ from app.utils.exceptions import RequestParamError
 async def handle_exception(request, handler):
     try:
         resp = await handler(request)
-        print ('@@@@@')
+        print (resp, '@@@@@')
+        return resp
     except RequestParamError as rp:
         print (handler)
-        return web.json_response('a')
+        return web.json_response(rp.message)
 
+
+# async def handle_exception(app, handler):
+#     print ('app', app)
+#     async def handle(request):
+#         return await handler(request)
+#     return handle
 
 
 
