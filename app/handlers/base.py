@@ -8,5 +8,5 @@ class MMBaseApi(object):
         pass
 
     async def reply_ok(self, resp):
-        response = {"status": ErrorCodes.Ok.value, "message": "Ok", "data": {"result": resp}}
+        response = {"status": ErrorCodes.Ok.value, "message": "Ok", "data": {"result": resp if not resp else []}}
         return web.json_response(data = response)
