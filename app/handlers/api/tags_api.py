@@ -40,6 +40,6 @@ class Tags(MMBaseApi):
         ret = []
         async for tag in tags:
             ret.append(tag)
-
-        return self.reply_ok(ret)
+        print (ret)
+        return await self.reply_ok(ret)
 
