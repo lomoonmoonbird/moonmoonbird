@@ -20,8 +20,10 @@ def init_routers(app):
 
     #tags
     app.router.add_get(prefix + '/tags/list', tag.get_tags)
+
     #threads
-    app.router.add_post('/api/blog/threads', t.post_thread)
+    app.router.add_post('/api/thread', t.post_thread)
+
     # app.router.add_get('/api/blog/threads', get_threads)
     # app.router.add_get('/api/blog/thread', thread_detail)
 
