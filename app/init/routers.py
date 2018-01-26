@@ -5,6 +5,7 @@ import pathlib
 from app.handlers.api.index_api import Index
 from app.handlers.api.thread_api import Threads
 from app.handlers.api.tags_api import Tags
+from app.handlers.api.category_api import Category
 
 PROJECT_ROOT = pathlib.Path(__file__).parent
 
@@ -14,13 +15,18 @@ def init_routers(app):
     t = Threads()
     index = Index()
     tag = Tags()
+    category = Category()
 
     #index
     app.router.add_get('/', index.index)
 
     #tags
     app.router.add_get(prefix + '/tags/list', tag.get_tags)
+    app.router.add_post(prefix + '/tags/post', tag.post_tag)
 
+    #categoty
+    app.router.add_post(prefix + '/category/post', category.post_category)
+    app.router.add_get(prefix + '/category/list', category.get_category)
     #threads
     app.router.add_post('/api/thread', t.post_thread)
 

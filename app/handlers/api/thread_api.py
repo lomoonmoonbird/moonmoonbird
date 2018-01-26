@@ -17,9 +17,8 @@ class Threads(MMBaseApi):
     def __init__(self):
         pass
 
-    # @classmethod
     @arg_parser(('title', str), ('content', str),
-                ('tags', list), ('imgs', list),
+                ('tags', list), ('thumbnail', list),
                 ('subtype', int), ('category', int))
     async def post_thread(self, request):
         """
@@ -31,7 +30,7 @@ class Threads(MMBaseApi):
             ('title',request.requestdata['title']),
             ('content',request.requestdata['content']),
             ('tags', request.requestdata['tags']),
-            ('imgs', request.requestdata['imgs']),
+            ('thumbnail', request.requestdata['thumbnail']),
             ('category', request.requestdata['category']),
             ('subtype', request.requestdata['subtype']),
             ('likes', 0),

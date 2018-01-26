@@ -3,15 +3,18 @@
 from aiohttp.web import middleware
 from aiohttp import web
 from app.utils.exceptions import RequestParamError
+import logging
 
 @middleware
 async def handle_exception(request, handler):
+    if request.method == "OPTIONS":
+        return web.json_response('')
     try:
         resp = await handler(request)
-        print (resp, '@@@@@')
+        logging.info(resp)
         return resp
     except RequestParamError as rp:
-        print (handler)
+        logging.info(rp.message)
         return web.json_response(rp.message)
 
 
