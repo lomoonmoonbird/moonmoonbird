@@ -23,12 +23,17 @@ def init_routers(app):
     #tags
     app.router.add_get(prefix + '/tags/list', tag.get_tags)
     app.router.add_post(prefix + '/tags/post', tag.post_tag)
+    app.router.add_put(prefix + '/tags/update', tag.update_tag)
+    app.router.add_delete(prefix + '/tags/delete', tag.delete_tag)
 
     #categoty
     app.router.add_post(prefix + '/category/post', category.post_category)
     app.router.add_get(prefix + '/category/list', category.get_category)
+    app.router.add_put(prefix + '/category/update', category.update_category)
+    app.router.add_delete(prefix + '/category/delete', category.delete_category)
     #threads
-    app.router.add_post('/api/thread', t.post_thread)
+    app.router.add_post('/api/threads/post', t.post_thread)
+    app.router.add_get('/api/threads/detail', t.thread_detail)
 
     # app.router.add_get('/api/blog/threads', get_threads)
     # app.router.add_get('/api/blog/thread', thread_detail)

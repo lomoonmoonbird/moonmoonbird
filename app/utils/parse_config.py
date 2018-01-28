@@ -20,9 +20,15 @@ TRAFARET = T.Dict({
             'user': T.String(),
             'password': T.String(),
         }),
+    T.Key('hashid'):
+        T.Dict({
+            'salt': T.String(),
+            'len': T.Int(),
+        }),
 
     T.Key('host'): T.IP,
     T.Key('port'): T.Int(),
+
 }
 )
 

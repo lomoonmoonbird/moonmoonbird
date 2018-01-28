@@ -14,3 +14,7 @@ mongodb:
 
 host: 127.0.0.1
 port: 8080
+
+hashid:
+  salt: 'dasdsdsjdks211kl*&*&(@!#@#!#klklqqe9113kl@#!#!#LDADKA*(!(JAIUEIQJKLJKLAJKD(E)(!*)(!@#**0928901903)@#!'
+  len: 16

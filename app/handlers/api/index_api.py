@@ -10,7 +10,7 @@ class Index(MMBaseApi):
 
     async def index(self, request):
         db = request.app['mongo_db']
-        threads = db.moonmoonbird.threads.find({}).limit(10)
+        threads = db.moonmoonbird.threads.find({}).limit(12)
         ret = []
         async for t in  threads:
             t['_id'] = str(t['_id'])
