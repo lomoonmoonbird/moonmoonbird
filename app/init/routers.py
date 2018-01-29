@@ -34,6 +34,7 @@ def init_routers(app):
     #threads
     app.router.add_post('/api/threads/post', t.post_thread)
     app.router.add_get('/api/threads/detail', t.thread_detail)
+    app.router.add_get('/api/threads/all', t.get_all_threads    )
 
     # app.router.add_get('/api/blog/threads', get_threads)
     # app.router.add_get('/api/blog/thread', thread_detail)

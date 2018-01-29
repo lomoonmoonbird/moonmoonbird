@@ -87,6 +87,17 @@ class Threads(MMBaseApi):
             ret.append(thread)
         self.reply_ok(ret)
 
+
+    async def get_all_threads(self, request):
+        ret = request.app['mongo_db'].moonmoonbird.threads.find({})
+        threads = []
+        async for thread in ret:
+            thread["id"] = str(thread['_id'])
+            del thread["_id"]
+            threads.append(thread)
+        print (threads)
+        return await self.reply_ok(threads)
+
     @arg_parser(('hash_url', str))
     async def thread_detail(self, request):
         one = await request.app['mongo_db'].moonmoonbird.threads.find_one({"hash_url": request.requestdata['hash_url']})
