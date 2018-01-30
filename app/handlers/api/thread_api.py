@@ -2,6 +2,7 @@
 
 import json
 import time
+from bson import ObjectId
 from collections import OrderedDict
 from aiohttp import web
 from app.utils.decorators import arg_parser
@@ -28,10 +29,7 @@ class Threads(MMBaseApi):
         :return:
         """
         ret = await request.app['mongo_db'].moonmoonbird.counter.find_and_modify(query={"_id": "thread_id"},
-                                          update={'$inc': {
-
-                                                           "num": 1},
-                                                  },
+                                          update={'$inc': {"num": 1}},
                                           # fields={'name': 1},
                                           upsert=True,
                                           new=True  ,
@@ -42,6 +40,7 @@ class Threads(MMBaseApi):
         new_thread = OrderedDict([
             ('title',request.requestdata['title']),
             # ('markdown_content',request.requestdata['markdown_content']),
+            ('desc', request.requestdata['desc']),
             ('html_content' ,request.requestdata['html_content']),
             ('tags', request.requestdata['tags']),
             ('thumbnail', request.requestdata['thumbnail']),
@@ -62,6 +61,29 @@ class Threads(MMBaseApi):
         id = await request.app['mongo_db'].moonmoonbird.threads.insert(new_thread)
 
         return await self.reply_ok('')
+
+    @arg_parser(('title', str),("id", str),
+                ('html_content', str), ('tags', list), ('desc', str),
+                ('category', str), ('thumbnail', str))
+    async def update_thread(self, request):
+        """
+        update thread
+        :param request:
+        :return:
+        """
+        new_thread = OrderedDict([
+            ('title', request.requestdata['title']),
+            ('html_content', request.requestdata['html_content']),
+            ('tags', request.requestdata['tags']),
+            ('thumbnail', request.requestdata['thumbnail']),
+            ('category', request.requestdata['category']),
+            ('update_time', time.time())
+        ])
+
+        collection = request.app['mongo_db'].moonmoonbird.threads
+        await collection.update({"_id": ObjectId(request.requestdata['id'])},
+                                {"$set": new_thread})
+        return await self.reply_ok([])
 
     @arg_parser(('category', int),('subtype', int),
                 ('page_type', int), ('create_time', float))
@@ -101,7 +123,8 @@ class Threads(MMBaseApi):
     @arg_parser(('hash_url', str))
     async def thread_detail(self, request):
         one = await request.app['mongo_db'].moonmoonbird.threads.find_one({"hash_url": request.requestdata['hash_url']})
-        one['_id'] = str(one['_id'])
+        one['id'] = str(one['_id'])
+        del one["_id"]
         return await self.reply_ok(one)
 
 

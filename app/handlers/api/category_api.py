@@ -15,18 +15,19 @@ class Category(MMBaseApi):
     def __init__(self):
         pass
 
-    @arg_parser(("name", str), ("desc", str), ("weight", int))
+    @arg_parser(("zh_name", str), ("en_name", str), ("desc", str), ("weight", int))
     async def post_category(self, request):
         new_tags = OrderedDict([
             # ('_id',request.requestdata['name']),
-            ('name', request.requestdata['name']),
+            ('zh_name', request.requestdata['zh_name']),
+            ('en_name', request.requestdata['en_name']),
             ('desc',request.requestdata['desc']),
             ('weight', request.requestdata['weight']),
             ('create_time', time.time()),
             ('update_time', time.time())
         ])
 
-        ret = await request.app['mongo_db'].moonmoonbird.category.update({"name": new_tags['name']},
+        ret = await request.app['mongo_db'].moonmoonbird.category.update({"en_name": new_tags['en_name'], "zh_name": new_tags['zh_name']},
                                                                      new_tags,
                                                                      upsert=True)
         return await self.reply_ok([])
