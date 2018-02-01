@@ -85,18 +85,18 @@ class Threads(MMBaseApi):
                                 {"$set": new_thread})
         return await self.reply_ok([])
 
-    @arg_parser(('time', float), ('category', str))
+    @arg_parser(('time', float), ('category_id', str))
     async def get_threads(self, request):
         """
         get threads with create_time based pagination
         :param request:
         :return:
         """
-        category = str(request.requestdata['category'])
+        category = str(request.requestdata['category_id'])
         create_time = float(request.requestdata['time'])
 
         db = request.app['mongo_db'].moonmoonbird.threads
-        threads = db.find({"create_time": {"$lt": create_time}, "category": category}).sort([("create_time", -1)]).limit(20)
+        threads = db.find({"create_time": {"$lt": create_time}, "category": category}).sort([("create_time", -1)]).limit(12)
 
         ret = []
         async for thread in threads:
