@@ -18,7 +18,7 @@ def init_routers(app):
     category = Category()
 
     #index
-    app.router.add_get('/', index.index)
+    app.router.add_get(prefix + '/index', index.index)
 
     #tags
     app.router.add_get(prefix + '/tags/list', tag.get_tags)

@@ -7,6 +7,7 @@ import logging
 
 @middleware
 async def handle_exception(request, handler):
+    logging.info('jinpeng')
     if request.method == "OPTIONS":
         return web.json_response('')
     try:

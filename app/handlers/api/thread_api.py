@@ -19,6 +19,14 @@ class Threads(MMBaseApi):
     def __init__(self):
         pass
 
+    async def get_tags(self, db, tagids=[]):
+        tags = db.moonmoonbird.tags.find({})
+        real_tags = []
+        async for t in tags:
+            if str(t["_id"]) in tagids:
+                real_tags.append(t['name'])
+        return real_tags
+
     @arg_parser(('title', str),
                 ('html_content', str),('tags', list),('desc', str),
                 ('category', str), ('thumbnail', str))
@@ -101,6 +109,7 @@ class Threads(MMBaseApi):
         ret = []
         async for thread in threads:
             thread['_id'] = str(thread['_id'])
+            thread['tags'] = await self.get_tags(request.app['mongo_db'], thread['tags'])
             ret.append(thread)
         return await self.reply_ok(ret)
 
@@ -110,6 +119,7 @@ class Threads(MMBaseApi):
         threads = []
         async for thread in ret:
             thread["id"] = str(thread['_id'])
+            thread["tags"] = await self.get_tags(request.app['mongo_db'], thread['tags'])
             del thread["_id"]
             threads.append(thread)
         print (threads)
@@ -119,6 +129,7 @@ class Threads(MMBaseApi):
     async def thread_detail(self, request):
         one = await request.app['mongo_db'].moonmoonbird.threads.find_one({"hash_url": request.requestdata['hash_url']})
         one['id'] = str(one['_id'])
+        one['tags'] = await self.get_tags(request.app['mongo_db'], one['tags'])
         del one["_id"]
         return await self.reply_ok(one)
 

@@ -2,7 +2,7 @@ import argparse
 import asyncio
 import logging
 import sys
-
+import os
 from aiohttp import web
 from app.init.db import init_mongodb, close_mongodb, init_mysql, close_mysql
 from app.init.routers import init_routers
@@ -14,8 +14,9 @@ from trafaret_config import commandline
 
 def init(loop, argv):
     ap = argparse.ArgumentParser()
+    config_path = os.path.dirname(__file__) + '/app/config/app.yaml'
     commandline.standard_argparse_options(ap,
-                                          default_config='./app/config/app.yaml')
+                                          default_config=config_path)
     #
     # define your command-line arguments here
     #
